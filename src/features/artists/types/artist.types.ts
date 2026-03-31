@@ -11,24 +11,6 @@ export interface Overview {
   activeYears: string
 }
 
-export interface Era {
-  id: string
-  title: string
-  startYear: number
-  endYear?: number
-  description: string
-  albums: string[]
-}
-
-export interface Album {
-  id: string
-  title: string
-  year: number
-  cover: string
-  description: string
-  themes: string[]
-}
-
 export interface Award {
   name: string
   year: number
@@ -44,13 +26,49 @@ export interface Legacy {
   summary: string
 }
 
+export interface Milestone {
+  date: string; 
+  event: string;
+  description: string;
+  type: 'award' | 'tour' | 'personal' | 'scandal'; 
+}
+
+export interface Track {
+  number: number;
+  title: string;
+  duration?: string;
+  featuredArtists?: string[]; 
+}
+
+export interface Era {
+  id: string
+  title: string
+  startYear: number
+  endYear?: number
+  description: string
+  albums: Album[]
+  milestones: Milestone[]
+}
+
+export interface Album {
+  id: string
+  title: string
+  year: number
+  cover: string
+  backCover: string
+  description: string
+  tracks: Track[]
+  themes: string[]
+  color: [string, string, string];
+  backColor: [string, string, string];
+}
+
 export interface Artist {
   id: string
   name: string
   hero: Hero
   overview: Overview
   eras: Era[]
-  albums: Album[]
   awards: Award[]
   influence: Influence[]
   legacy: Legacy
