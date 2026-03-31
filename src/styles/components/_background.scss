@@ -1,0 +1,49 @@
+@use "../abstracts/variables" as *;
+
+@keyframes atmosphericFlow {
+  0% {transform: translate(0, 0) scale(1);}
+  33% {transform: translate(-5%, 5%) scale(1.1);}
+  66% {transform: translate(5%, -2%) scale(0.9);}
+  100% {transform: translate(0, 0) scale(1);}
+}
+
+.timeline-background {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  background-color: var(--bg-color-1, #0a0807);
+  transition: background-color 0.8s ease;
+  overflow: hidden;
+
+  &__blobs {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -25%;
+    filter: blur(100px);
+    opacity: 0.5; // Ajustar para más o menos intensidad
+    animation: atmosphericFlow $anim-bg-speed ease-in-out infinite;
+  
+    background-image: 
+      radial-gradient(circle at 20% 30%, var(--bg-color-3, #4d3d1a) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, var(--bg-color-2, #2c241d) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, var(--bg-color-1, #0a0807) 0%, var(--bg-color-1, #0a0807) 100%);
+      transition: background-image 0.8s ease;
+  }
+
+  // Overlay de ruido (opcional para textura minimalista)
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.04; // Un poco más de opacidad para que el SVG se note bien
+    pointer-events: none;
+    
+    // Ruido generado matemáticamente por el navegador (¡cero peticiones externas!)
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+}

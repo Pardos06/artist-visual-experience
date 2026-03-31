@@ -1,0 +1,47 @@
+@use "../abstracts/variables" as *;
+
+.bento-cover__3d-wrapper {
+  position: relative; 
+  
+  width: 100%; 
+  max-width: 400px; 
+  aspect-ratio: 1 / 1; 
+  
+  perspective: 1300px;
+  z-index: 2;
+  margin: 0 auto;
+}
+
+.bento-cover__3d-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d; 
+  transition: transform 0.1s; 
+}
+
+.bento-cover__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: $bento-inner-radius;
+  overflow: hidden;
+  background-color: $bento-bg-item;
+  //Sombra para separarlo visualmente del fondo 
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); 
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; //Previene que el navegador "arrastre" la imagen fantasma
+  }
+
+  &--front {
+    transform: rotateY(0deg); 
+  }
+
+  &--back {
+    transform: rotateY(180deg); 
+  }
+}

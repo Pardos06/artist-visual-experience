@@ -1,0 +1,62 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.timeline__milestones {
+  background: $dropout-bg-1; 
+  height: 100vh;
+  color: $color-primary;
+
+  h3 {
+    font-size: 2rem;
+    margin-bottom: $spacing-lg;
+    @include text-balance; 
+  }
+
+  .milestone-list {
+    list-style: none;
+    padding: 0;
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg; 
+    text-align: left;
+  }
+
+  .milestone-item {
+    background: rgba($color-primary, 0.05);
+    padding: $spacing-lg; 
+    border-radius: $bento-inner-radius; 
+    position: relative;
+
+    .milestone-date {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      display: block;
+      margin-bottom: $spacing-sm;
+    }
+
+    .milestone-event {
+      font-size: 1.2rem;
+      margin-bottom: $spacing-sm;
+    }
+
+    .milestone-desc {
+      font-size: 0.95rem;
+      opacity: 0.8;
+      margin: 0;
+    }
+
+    .milestone-badge {
+      position: absolute;
+      top: $spacing-md;
+      right: $spacing-md;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      background: rgba($color-primary, 0.1);
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}

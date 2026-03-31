@@ -1,0 +1,32 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.overview {
+  &__title {
+    font-size: 2rem;
+    margin-bottom: $spacing-md;
+    text-align: center;
+    @include text-balance; 
+  }
+
+  &__bio {
+    max-width: 700px;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg; 
+
+    span {
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    p {
+      font-weight: 500;
+      margin: 0; 
+    }
+  }
+}

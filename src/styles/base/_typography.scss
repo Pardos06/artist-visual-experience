@@ -1,5 +1,9 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
 h1, h2, h3 {
   font-weight: 600;
+  @include text-balance; // Aplica el balance de texto a todos los encabezados
 }
 
 p {

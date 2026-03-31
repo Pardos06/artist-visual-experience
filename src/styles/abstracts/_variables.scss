@@ -7,3 +7,27 @@ $font-main: 'Segoe UI', 'Helvetica Neue', sans-serif;
 $spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 32px;
+
+$dropout-gradient: linear-gradient(
+  60deg, 
+  var(--color-1, #1e1612), 
+  var(--color-3, #f4f4f4), 
+  var(--color-2, #c29b38), 
+  var(--color-1, #1e1612)
+);
+
+$anim-gradient-speed: 8s;
+$anim-bg-flow-speed: 25s;
+
+$bento-radius: 16px;
+$bento-inner-radius: 14px;
+$bento-border-width: 2px;
+$bento-bg-item: #0f0f0f;
+
+$dropout-bg-1: #0a0807; // Negro café profundo
+$dropout-bg-2: #2c241d; // Café tierra quemada
+$dropout-bg-3: #4d3d1a; // Oro viejo apagado
+
+$anim-bg-speed: 30s; 
+
+$container-max-width: 1200px;

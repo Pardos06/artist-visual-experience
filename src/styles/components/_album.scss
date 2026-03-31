@@ -1,0 +1,188 @@
+@use "../abstracts/variables" as *;
+
+.timeline__album {
+  width: 100vw;
+  height: 100vh;
+  color: $color-primary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5vh 3vw;
+  box-sizing: border-box;
+}
+
+.album-bento {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  grid-template-rows: auto 1fr 1fr;
+  grid-template-areas:
+    "cover title"
+    "cover tracklist"
+    "description concepts";
+  gap: $spacing-lg; // 24px
+  width: 100%;
+  max-width: 95vw; // Permite que crezca hasta el 95% del ancho de la pantalla
+  height: 100%;
+  min-height: 85vh; // Obliga a que tome buena parte del alto de la pantalla
+  max-height: 95vh;
+
+  &__item {
+    position: relative;
+    isolation: isolate;
+    background: $dropout-gradient;
+    background-size: 300% 300%;
+    animation: gradientFlow $anim-gradient-speed ease infinite;
+    border-radius: $bento-radius;
+    padding: $spacing-lg - 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: $bento-border-width;
+      background-color: $bento-bg-item;
+      border-radius: $bento-inner-radius;
+      z-index: -1;
+    }
+  }
+
+  &__cover {
+    grid-area: cover;
+    padding: 2rem; // Sobreescribe el padding general para la imagen
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: visible !important; // CRÍTICO para que el CD no se corte al girar
+    z-index: 10;
+
+    .bento-cover__3d-wrapper {
+      width: 100%;
+      max-width: 85%; // Cambia este número (ej. 220px) si lo quieres aún más chico
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  &__title {
+    grid-area: title;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 2.2rem;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    span {
+      font-size: 1.2rem;
+      opacity: 0.5;
+    }
+  }
+
+  &__tracklist {
+    grid-area: tracklist;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+    overflow: visible;
+
+    .track-list {
+      list-style: none;
+      padding: 0;
+
+      .track-item {
+        display: flex;
+        align-items: baseline;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid rgba($color-primary, 0.05);
+        
+        &:last-child { border: none; }
+
+        .track-number {
+          width: 24px;
+          font-size: 0.8rem;
+          opacity: 0.3;
+          flex-shrink: 0;
+        }
+
+        .track-info {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          
+          .track-title { font-size: 1.15rem; color: rgba($color-primary, 0.9); }
+          .track-featured { font-size: 0.9rem; opacity: 0.4; margin-top: 2px; }
+        }
+
+        .track-duration {
+          font-size: 1rem;
+          font-family: monospace;
+          opacity: 0.4;
+        }
+      }
+    }
+  }
+
+  &__desc {
+    grid-area: description;
+    justify-content: start;
+    p { 
+      margin: 0; 
+      line-height: 1.8; 
+      opacity: 0.85; 
+      font-size: 1.25rem;}
+  }
+
+  &__concepts {
+    grid-area: concepts;
+    justify-content: center;
+
+    .themes-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: $spacing-md;
+
+      .theme-pill {
+        padding: 0.4rem 1.5rem;
+        background: rgba($color-primary, 0.03);
+        border: 1px solid rgba($color-primary, 0.1);
+        border-radius: 8px;
+        font-size: 1.05rem;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+// --- ANIMACIONES & RESPONSIVE ---
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 900px) {
+  .album-bento {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+    max-height: none;
+    grid-template-areas: "title" "cover" "tracklist" "concepts" "description";
+
+    &__tracklist { grid-template-columns: 1fr; overflow-y: visible; }
+    &__cover { min-height: 300px; }
+  }
+
+  .timeline__album {
+    height: auto;
+    min-height: 100vh;
+    padding: $spacing-md;
+    align-items: flex-start;
+  }
+}

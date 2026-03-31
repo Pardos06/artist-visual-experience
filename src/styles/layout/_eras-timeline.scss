@@ -1,0 +1,41 @@
+@use "../abstracts/variables" as *;
+.timeline {
+  &__slide {
+    height: 100vh;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+
+    padding: $spacing-lg; 
+    box-sizing: border-box; 
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__era {
+    color: $color-primary;
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    > span {
+      opacity: 0.6;
+    }
+
+    p {
+      max-width: 600px;
+      margin-top: 1rem;
+    }
+  }
+}
+
+@keyframes bgFlowOptimized {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-10%, -10%) rotate(5deg); } 
+  100% { transform: translate(0, 0) rotate(0deg); }
+}

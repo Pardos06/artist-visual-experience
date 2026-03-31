@@ -1,7 +1,7 @@
 @use "../abstracts/variables" as v;
+
 body {
   font-family: v.$font-main;
-  background: v.$color-secondary;
   color: v.$color-primary;
   overflow-x: hidden;
 }

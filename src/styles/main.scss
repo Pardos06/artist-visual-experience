@@ -10,6 +10,23 @@
 // LAYOUT
 @use "./layout/container";
 @use "./layout/section";
+@use "./layout/eras-timeline";
 
 // COMPONENTS
 @use "./components/hero";
+@use "./components/overview";
+@use "./components/album";
+@use "./components/milestone";
+@use "./components/background";
+@use "./components/bento-cover-3d";
+
+
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+section,
+.slide {
+  scroll-snap-align: start;
+}
