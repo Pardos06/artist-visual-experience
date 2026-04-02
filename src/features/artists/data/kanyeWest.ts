@@ -112,16 +112,28 @@ export const kanyeWest: Artist = {
           year: 2007,
           cover: graduation,
           backCover: graduationBack,
-          description: "Stadium-ready and electronic influenced.",
-          themes: ["success", "alienation", "glory"],
-          color: ["#FF00FF", "#00FFFF", "#330066"], // Magenta, Cian y Morado (Estética Takashi Murakami)
-          backColor: ["#4a004a", "#002b36", "#1a0033"], // Morados y azules neón oscurecidos para el fondo
+          description: "El cierre de la trilogía universitaria de Kanye West, donde abandona definitivamente el sonido soul clásico para abrazar una producción más electrónica, minimalista y orientada a estadios. Influenciado por el house europeo y el synth-pop, el álbum refleja su ascenso global, explorando la fama, el ego, la desconexión emocional y la ambición, todo envuelto en una estética futurista y vibrante desarrollada junto al artista Takashi Murakami.",
+          themes: ["Fama", "Éxito", "Alienación", "Ego", "Ambición", "Superación"],
+          color: ["#FF00FF", "#00FFFF", "#330066"], // Magenta, cian y morado (estética Murakami)
+          backColor: ["#4a004a", "#002b36", "#1a0033"], // Tonos oscuros neón para contraste de fondo
           tracks: [
             { number: 1, title: "Good Morning", duration: "3:15" },
             { number: 2, title: "Champion", duration: "2:47" },
             { number: 3, title: "Stronger", duration: "5:11", featuredArtists: ["Daft Punk"] },
-            { number: 4, title: "Good Life", duration: "3:27", featuredArtists: ["T-Pain"] },
-            { number: 5, title: "Flashing Lights", duration: "3:57", featuredArtists: ["Dwele"] }
+            { number: 4, title: "I Wonder", duration: "4:03" },
+            { number: 5, title: "Good Life", duration: "3:27", featuredArtists: ["T-Pain"] },
+            { number: 6, title: "Can't Tell Me Nothing", duration: "4:31" },
+            { number: 7, title: "Barry Bonds", duration: "3:24", featuredArtists: ["Lil Wayne"] },
+            { number: 8, title: "Drunk and Hot Girls", duration: "5:13", featuredArtists: ["Mos Def"] },
+            { number: 9, title: "Flashing Lights", duration: "3:57", featuredArtists: ["Dwele"] },
+            { number: 10, title: "Everything I Am", duration: "3:48" },
+            { number: 11, title: "The Glory", duration: "3:32" },
+            { number: 12, title: "Homecoming", duration: "3:23", featuredArtists: ["Chris Martin"] },
+            { number: 13, title: "Big Brother", duration: "4:47" },
+
+            // BONUS TRACKS (según edición)
+            { number: 14, title: "Good Night", duration: "3:05", featuredArtists: ["Mos Def", "Al Be Back"] },
+            { number: 15, title: "Bittersweet Poetry", duration: "4:02", featuredArtists: ["John Mayer"] }
           ]
         }
       ],

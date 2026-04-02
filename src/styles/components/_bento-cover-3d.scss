@@ -10,6 +10,14 @@
   perspective: 1300px;
   z-index: 2;
   margin: 0 auto;
+  
+  user-select: none;
+  -webkit-user-select: none; /* Para Safari/Chrome */
+  -moz-user-select: none;    /* Para Firefox */
+  -ms-user-select: none;
+
+  touch-action: none;
+
 }
 
 .bento-cover__3d-inner {

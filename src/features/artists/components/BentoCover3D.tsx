@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring, type PanInfo } from "framer-motion";
 
 interface Props {
@@ -9,17 +10,35 @@ interface Props {
 const BentoCover3D = ({ cover, backCover, title }: Props) => {
   const rotateY = useMotionValue(0);
   const smoothRotateY = useSpring(rotateY, { stiffness: 200, damping: 20 });
+  const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // 1. Añadimos el guion bajo a _event
-  // 2. Importamos PanInfo para tipar estrictamente la información
+  useEffect(() => {
+    return () => {
+      if (resetTimeoutRef.current) {
+        clearTimeout(resetTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handlePan = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (resetTimeoutRef.current) {
+      clearTimeout(resetTimeoutRef.current);
+    }
+    
     rotateY.set(rotateY.get() + info.delta.x * 0.6);
   };
 
+  const handlePanEnd = () => {
+    resetTimeoutRef.current = setTimeout(() => {
+      rotateY.set(0);
+    }, 10000); 
+  };
+
   return (
-    <div className="bento-cover__3d-wrapper" style={{ touchAction: "none" }}>
+    <div className="bento-cover__3d-wrapper">
       <motion.div
         onPan={handlePan}
+        onPanEnd={handlePanEnd} 
         style={{ rotateY: smoothRotateY }}
         className="bento-cover__3d-inner"
         whileHover={{ cursor: "grab" }}

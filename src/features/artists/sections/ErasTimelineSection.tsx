@@ -20,7 +20,7 @@ const ErasTimelineSection = ({ eras }: Props) => {
 
       <section className="timeline">
         {eras.map((era) => (
-          <div key={era.id} className="timeline__era-group">
+          <div key={era.id} className="__era-group">
             
             <div className="timeline__slide timeline__era">
               <h2>{era.title}</h2>
@@ -67,39 +67,47 @@ const ErasTimelineSection = ({ eras }: Props) => {
                     </div>
 
                     <div className="album-bento__item album-bento__tracklist">
-                      <ol className="track-list">
-                        {firstHalfTracks.map((track) => (
-                          <li key={track.number} className="track-item">
-                            <span className="track-number">{track.number}</span>
-                            <span className="track-info">
-                              <span className="track-title">{track.title}</span>
-                              {track.featuredArtists && track.featuredArtists.length > 0 && (
-                                <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
-                              )}
-                            </span>
-                            {track.duration && <span className="track-duration">{track.duration}</span>}
-                          </li>
-                        ))}
-                      </ol>
                       
-                      <ol className="track-list">
-                        {secondHalfTracks.map((track) => (
-                          <li key={track.number} className="track-item">
-                            <span className="track-number">{track.number}</span>
-                            <span className="track-info">
-                              <span className="track-title">{track.title}</span>
-                              {track.featuredArtists && track.featuredArtists.length > 0 && (
-                                <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
-                              )}
-                            </span>
-                            {track.duration && <span className="track-duration">{track.duration}</span>}
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
+                      <div className="bento-scroll-wrapper tracklist-grid">
+                        
+                        <ol className="track-list">
+                          {firstHalfTracks.map((track) => (
+                            <li key={track.number} className="track-item">
+                              <span className="track-number">{track.number}</span>
+                              <span className="track-info">
+                                <span className="track-title">{track.title}</span>
+                                {track.featuredArtists && track.featuredArtists.length > 0 && (
+                                  <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
+                                )}
+                              </span>
+                              {track.duration && <span className="track-duration">{track.duration}</span>}
+                            </li>
+                          ))}
+                        </ol>
 
+                        <ol className="track-list">
+                          {secondHalfTracks.map((track) => (
+                            <li key={track.number} className="track-item">
+                              <span className="track-number">{track.number}</span>
+                              <span className="track-info">
+                                <span className="track-title">{track.title}</span>
+                                {track.featuredArtists && track.featuredArtists.length > 0 && (
+                                  <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
+                                )}
+                              </span>
+                              {track.duration && <span className="track-duration">{track.duration}</span>}
+                            </li>
+                          ))}
+                        </ol>
+
+                      </div> 
+
+                    </div>
+                      
                     <div className="album-bento__item album-bento__desc">
-                      <p>{album.description}</p>
+                      <div className="bento-scroll-wrapper desc-wrapper">
+                        <p>{album.description}</p>
+                      </div>
                     </div>
 
                     <div className="album-bento__item album-bento__concepts">
