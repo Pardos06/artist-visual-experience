@@ -2,6 +2,7 @@
 @use "../abstracts/mixins" as *;
 
 .overview {
+  @include slide-base;
   &__title {
     font-size: 2rem;
     margin-bottom: $spacing-md;

@@ -2,6 +2,7 @@
 @use "../abstracts/mixins" as *;
 
 .timeline__milestones {
+  @include slide-base;
   background: $dropout-bg-1; 
   height: 100vh;
   color: $color-primary;

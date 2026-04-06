@@ -22,7 +22,7 @@ const ErasTimelineSection = ({ eras }: Props) => {
         {eras.map((era) => (
           <div key={era.id} className="__era-group">
             
-            <div className="timeline__slide timeline__era">
+            <div className="era-intro">
               <h2>{era.title}</h2>
               <span>
                 {era.startYear} - {era.endYear || "Present"}
@@ -31,7 +31,7 @@ const ErasTimelineSection = ({ eras }: Props) => {
             </div>
 
             {era.milestones && era.milestones.length > 0 && (
-              <div className="timeline__slide timeline__milestones">
+              <div className="timeline__milestones">
                 <h3>Momentos Clave</h3>
                 <ul className="milestone-list">
                   {era.milestones.map((milestone, index) => (
@@ -50,7 +50,14 @@ const ErasTimelineSection = ({ eras }: Props) => {
               const [firstHalfTracks, secondHalfTracks] = splitArrayInHalf(album.tracks || []);
 
               return (
-                <div key={album.id} className="timeline__slide timeline__album">
+                <div 
+                  key={album.id} 
+                  className="timeline__album"
+                  style={{
+                        '--album-color-1': album.color[0],
+                        '--album-color-2': album.color[1],
+                        '--album-color-3': album.color[2],
+                        }as React.CSSProperties}>
                   <div className="album-bento">
                     
                     <div className="album-bento__item album-bento__cover bento-cover">

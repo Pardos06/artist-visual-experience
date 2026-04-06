@@ -2,6 +2,7 @@
 @use "../abstracts/mixins" as *;
 
 .timeline__album {
+  @include slide-base;
   width: 100vw;
   height: 100vh;
   color: $color-primary;
@@ -16,7 +17,7 @@
   grid-template-rows: 
     minmax(0, 0.3fr)  // Fila 1: Solo Título 
     minmax(0, 0.9fr)  // Fila 2: Cover (Izq) / Tracklist (Der) 
-    minmax(0, 0.7fr)  // Fila 3: Descripción (Izq) / Tracklist (Der) - CORREGIDO a 0.7fr
+    minmax(0, 0.3fr)  // Fila 3: Descripción (Izq) / Tracklist (Der) - CORREGIDO a 0.7fr
     minmax(0, 0.3fr); // Fila 4: Descripción (Izq) / Conceptos (Der) 
   grid-template-areas:
     "cover title"
@@ -56,7 +57,12 @@
       border-radius: $bento-radius;
       padding: $bento-border-width;
       
-      background: $dropout-gradient;
+      background: linear-gradient(
+        45deg, 
+        var(--album-color-1, #333), 
+        var(--album-color-2, #666), 
+        var(--album-color-3, #999)
+      );
       background-size: 300% 300%;
       animation: gradientFlow $anim-gradient-speed ease infinite;
       
@@ -85,7 +91,7 @@
     &::-webkit-scrollbar { width: 6px; }
     &::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
     &::-webkit-scrollbar-thumb { background-color: rgba($color-primary, 0.15); border-radius: 20px; }
-    &::-webkit-scrollbar-thumb:hover { background-color: rgba($color-primary, 0.3); }
+    &::-webkit-scrollbar-thumb:hover { background-color: var(--album-color-1, rgba($color-primary, 0.3)); }
     scrollbar-width: thin; 
     scrollbar-color: rgba($color-primary, 0.15) transparent;
   }
