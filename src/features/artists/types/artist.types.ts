@@ -47,7 +47,7 @@ export interface Era {
   endYear?: number
   description: string
   albums: Album[]
-  milestones: Milestone[]
+  milestones?: Milestone[]
 }
 
 export interface Album {

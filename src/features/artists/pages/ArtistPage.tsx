@@ -1,4 +1,4 @@
-import { kanyeWest } from "../data/kanyeWest";
+import { kanyeWest } from "../data/kanye/kanyeWest";
 import AwardsSection from "../sections/AwardSection";
 import ErasTimelineSection from "../sections/ErasTimelineSection";
 import ArtistFooter from "../sections/FooterSection";

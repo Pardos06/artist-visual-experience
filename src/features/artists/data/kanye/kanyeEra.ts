@@ -1,35 +1,18 @@
-import type { Artist } from "../types/artist.types"
-import heroImage from "../../../assets/images/kanye/hero.webp"
-
+import type {Era} from "../../types/artist.types";
 // Portadas
-import dropout from "../../../assets/images/kanye/dropout.webp"
-import late from "../../../assets/images/kanye/late.webp"
-import graduation from "../../../assets/images/kanye/graduation.webp"
+import dropout from "../../../../assets/images/kanye/dropout.webp"
+import late from "../../../../assets/images/kanye/late.webp"
+import graduation from "../../../../assets/images/kanye/graduation.webp"
+import heart from "../../../../assets/images/kanye/heart.webp"
 
 // Contraportadas (CD físico o tracklist trasero para el giro 3D)
-import dropoutBack from "../../../assets/images/kanye/dropout-back.webp"
-import lateBack from "../../../assets/images/kanye/late-back.webp"
-import graduationBack from "../../../assets/images/kanye/graduation-back.webp"
+import dropoutBack from "../../../../assets/images/kanye/dropout-back.webp"
+import lateBack from "../../../../assets/images/kanye/late-back.webp"
+import graduationBack from "../../../../assets/images/kanye/graduation-back.webp"
+import heartback from "../../../../assets/images/kanye/heart-back.webp"
 
-export const kanyeWest: Artist = {
-  id: "kanye",
-  name: "Kanye West",
-
-  hero: {
-    image: heroImage,
-    quote: "I feel like I'm too busy writing history to read it.",
-  },
-
-  overview: {
-    biography: "Kanye West emergió como un productor a innovador en la escena del hip-hop de principios de los 2000, ganando reconocimiento por su trabajo con artistas como Jay-Z y Alicia Keys. En 2004, lanzó su álbum debut 'The College Dropout', que fue aclamado por la crítica y marcó el comienzo de una carrera musical influyente. A lo largo de los años, Kanye ha experimentado con diversos estilos musicales, desde el soul hasta el gospel, consolidándose como uno de los artistas más versátiles y controvertidos de su generación.", 
-    born: "Junio 8, 1977",
-    origin: "Chicago, Illinois, USA",
-    genres: ["Hip-Hop", "Experimental", "Gospel"],
-    activeYears: "2004 - present",
-  },
-
-  eras: [
-    {
+export const kanyeEras: Era[] = [
+ {
       id: "college-era",
       title: "The College Era",
       startYear: 2004,
@@ -151,36 +134,70 @@ export const kanyeWest: Artist = {
           type: "personal"
         }
       ]
-    }
-  ],
-  awards: [
-    {
-      name: "Grammy Award",
-      year: 2005,
-      category: "Best Rap Album (The College Dropout)"
     },
     {
-      name: "Grammy Award",
-      year: 2006,
-      category: "Best Rap Album (Late Registration)"
-    },
-    {
-      name: "Grammy Award",
-      year: 2008,
-      category: "Best Rap Album (Graduation)"
+        id: "heartbreak-era",
+      title: "808s Era",
+      startYear: 2008,
+      endYear: 2009,
+      description: "Etapa marcada por un giro radical en el sonido de Kanye West hacia el uso intensivo de autotune, minimalismo y una estética fría y emocional. Inspirada por la muerte de su madre y una ruptura sentimental, esta era explora temas de pérdida, soledad y vulnerabilidad, influyendo profundamente en el futuro del hip hop y el pop contemporáneo.",
+      albums: [
+        {
+          id: "808s-heartbreak",
+          title: "808s & Heartbreak",
+          year: 2008,
+          cover: heart,
+          backCover: heartback,
+          description: "El álbum que marca el comienzo de la '808s Era', caracterizado por el uso intensivo de autotune, minimalismo y una estética fría y emocional. Inspirado por la muerte de su madre y una ruptura sentimental, explora temas de pérdida, soledad y vulnerabilidad.",
+
+          themes: ["heartbreak","loss","isolation","love","emotional vulnerability"],
+          color: ["#1a1a1a", "#3a3a3a", "#888888"],
+          backColor: ["#000000", "#2c2c2c", "#6e6e6e"], // Oro viejo, Café tierra, Negro profundo (Fondo)
+          tracks: [
+            { number: 1, title: "Say You Will", duration: "6:18" },
+            { number: 2, title: "Welcome to Heartbreak", duration: "4:22", featuredArtists: ["Kid Cudi"] },
+            { number: 3, title: "Heartless", duration: "3:31" },
+            { number: 4, title: "Amazing", duration: "3:58", featuredArtists: ["Jeezy"] },
+            { number: 5, title: "Love Lockdown", duration: "4:30" },
+            { number: 6, title: "Paranoid", duration: "4:38", featuredArtists: ["Mr Hudson"] },
+            { number: 7, title: "RoboCop", duration: "4:34" },
+            { number: 8, title: "Street Lights", duration: "3:10" },
+            { number: 9, title: "Bad News", duration: "3:58" },
+            { number: 10, title: "See You in My Nightmares", duration: "4:18", featuredArtists: ["Lil Wayne"] },
+            { number: 11, title: "Coldest Winter", duration: "2:44" },
+            { number: 12, title: "Pinocchio Story", duration: "6:01" }
+          ],
+        }
+      ],
+      milestones: [
+        {
+          date: "2007-11",
+          event: "Death of Donda West",
+          description:
+            "La muerte de su madre marca profundamente el enfoque emocional del siguiente álbum.",
+          type: "personal"
+        },
+        {
+          date: "2008-11",
+          event: "Release of 808s & Heartbreak",
+          description:
+            "Lanzamiento del álbum que introduce un cambio radical en su sonido y estilo artístico.",
+          type: "award"
+        },
+        {
+          date: "2008-09",
+          event: "MTV VMAs Incident",
+          description:
+            "Interrupción del discurso de Taylor Swift en los VMAs, generando gran controversia mediática.",
+          type: "scandal"
+        },
+        {
+          date: "2009-04",
+          event: "Glow in the Dark Tour",
+          description:
+            "Gira que consolidó la estética visual futurista y emocional de esta etapa.",
+          type: "tour"
+        }
+      ]
     }
-  ],
-  influence: [
-    {
-      title: "Chipmunk Soul",
-      description: "Popularizó la técnica de samplear discos de soul clásico acelerando las voces para crear un tono agudo característico."
-    },
-    {
-      title: "Vulnerabilidad en el Hip-Hop",
-      description: "Alejó el género de su hiper-masculinidad tradicional, abriendo la puerta a raperos introspectivos como Drake, Kid Cudi y J. Cole."
-    }
-  ],
-  legacy: {
-    summary: "One of the most influential artists of modern music, known for constantly pushing sonic boundaries and redefining the landscape of hip-hop and pop culture.",
-  },
-}
+];

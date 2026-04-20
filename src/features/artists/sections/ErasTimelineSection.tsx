@@ -1,16 +1,69 @@
+import { useEffect, useState } from "react";
 import BentoCover3D from "../components/BentoCover3D";
-import type { Era } from "../types/artist.types"
+import type { Era } from "../types/artist.types";
+import { client, urlFor } from "../../../lib/sanity";
 
 const splitArrayInHalf = <T,>(arr: T[]): [T[], T[]] => {
   const half = Math.ceil(arr.length / 2);
   return [arr.slice(0, half), arr.slice(half)];
-}
+};
 
-interface Props {
-  eras: Era[]
-}
+const ErasTimelineSection = () => {
+  // 1. Estados para la arquitectura de datos interactiva
+  const [eras, setEras] = useState<Era[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-const ErasTimelineSection = ({ eras }: Props) => {
+  // 2. Fetcher: Conexión con Sanity al montar el componente
+  useEffect(() => {
+    const fetchEras = async () => {
+      const query = `
+        *[_type == "era"] | order(startYear asc) {
+          "id": _id,
+          title,
+          startYear,
+          endYear,
+          description,
+          "albums": albums[]->{
+            id,
+            title,
+            year,
+            cover,
+            backCover,
+            description,
+            themes,
+            color,
+            backColor,
+            tracks
+          }
+        }
+      `;
+      
+      try {
+        const data = await client.fetch(query);
+        console.log("DATA DE SANITY:", data); 
+        setEras(data);
+      } catch (error) {
+        console.error("Error al traer la data de Sanity:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEras();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="timeline-wrapper">
+        <section className="timeline">
+          <div className="era-intro" style={{ opacity: 0.5 }}>
+            <h2>Cargando archivo histórico...</h2>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="timeline-wrapper">
       
@@ -46,7 +99,7 @@ const ErasTimelineSection = ({ eras }: Props) => {
               </div>
             )}
 
-            {era.albums.map((album) => {
+            {era.albums?.map((album) => {
               const [firstHalfTracks, secondHalfTracks] = splitArrayInHalf(album.tracks || []);
 
               return (
@@ -54,16 +107,17 @@ const ErasTimelineSection = ({ eras }: Props) => {
                   key={album.id} 
                   className="timeline__album"
                   style={{
-                        '--album-color-1': album.color[0],
-                        '--album-color-2': album.color[1],
-                        '--album-color-3': album.color[2],
-                        }as React.CSSProperties}>
+                    '--album-color-1': album.color?.[0] || '#333',
+                    '--album-color-2': album.color?.[1] || '#666',
+                    '--album-color-3': album.color?.[2] || '#999',
+                  } as React.CSSProperties}
+                >
                   <div className="album-bento">
                     
                     <div className="album-bento__item album-bento__cover bento-cover">
                       <BentoCover3D 
-                        cover={album.cover} 
-                        backCover={album.backCover} 
+                        cover={album.cover ? urlFor(album.cover).url() : ''} 
+                        backCover={album.backCover ? urlFor(album.backCover).url() : ''} 
                         title={album.title} 
                       />
                     </div>
@@ -74,7 +128,6 @@ const ErasTimelineSection = ({ eras }: Props) => {
                     </div>
 
                     <div className="album-bento__item album-bento__tracklist">
-                      
                       <div className="bento-scroll-wrapper tracklist-grid">
                         
                         <ol className="track-list">
@@ -108,7 +161,6 @@ const ErasTimelineSection = ({ eras }: Props) => {
                         </ol>
 
                       </div> 
-
                     </div>
                       
                     <div className="album-bento__item album-bento__desc">
@@ -135,7 +187,7 @@ const ErasTimelineSection = ({ eras }: Props) => {
         ))}
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default ErasTimelineSection
+export default ErasTimelineSection;
