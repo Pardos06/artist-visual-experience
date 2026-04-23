@@ -1,63 +1,26 @@
-import { useEffect, useState } from "react";
 import BentoCover3D from "../components/BentoCover3D";
-import type { Era } from "../types/artist.types";
-import { client, urlFor } from "../../../lib/sanity";
+import { urlFor } from "../../../lib/sanity";
+// Importamos los tipos (ajusta la ruta si es necesario)
+import type { Era, Album, Track } from "../types/artist.types";
 
 const splitArrayInHalf = <T,>(arr: T[]): [T[], T[]] => {
   const half = Math.ceil(arr.length / 2);
   return [arr.slice(0, half), arr.slice(half)];
 };
 
-const ErasTimelineSection = () => {
-  // 1. Estados para la arquitectura de datos interactiva
-  const [eras, setEras] = useState<Era[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+// DEFINIMOS LA INTERFAZ DE PROPS
+interface ErasTimelineProps {
+  eras: Era[];
+}
 
-  // 2. Fetcher: Conexión con Sanity al montar el componente
-  useEffect(() => {
-    const fetchEras = async () => {
-      const query = `
-        *[_type == "era"] | order(startYear asc) {
-          "id": _id,
-          title,
-          startYear,
-          endYear,
-          description,
-          "albums": albums[]->{
-            id,
-            title,
-            year,
-            cover,
-            backCover,
-            description,
-            themes,
-            color,
-            backColor,
-            tracks
-          }
-        }
-      `;
-      
-      try {
-        const data = await client.fetch(query);
-        console.log("DATA DE SANITY:", data); 
-        setEras(data);
-      } catch (error) {
-        console.error("Error al traer la data de Sanity:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
 
-    fetchEras();
-  }, []);
-
-  if (isLoading) {
+  if (!eras || eras.length === 0) {
     return (
       <div className="timeline-wrapper">
         <section className="timeline">
           <div className="era-intro" style={{ opacity: 0.5 }}>
-            <h2>Cargando archivo histórico...</h2>
+            <h2>No hay eras registradas para este artista.</h2>
           </div>
         </section>
       </div>
@@ -66,13 +29,12 @@ const ErasTimelineSection = () => {
 
   return (
     <div className="timeline-wrapper">
-      
       <div className="timeline-background">
         <div className="timeline-background__blobs"></div>
       </div>
 
       <section className="timeline">
-        {eras.map((era) => (
+        {eras.map((era: Era) => (
           <div key={era.id} className="__era-group">
             
             <div className="era-intro">
@@ -83,23 +45,7 @@ const ErasTimelineSection = () => {
               <p>{era.description}</p>
             </div>
 
-            {era.milestones && era.milestones.length > 0 && (
-              <div className="timeline__milestones">
-                <h3>Momentos Clave</h3>
-                <ul className="milestone-list">
-                  {era.milestones.map((milestone, index) => (
-                    <li key={index} className="milestone-item">
-                      <span className="milestone-date">{milestone.date}</span>
-                      <h4 className="milestone-event">{milestone.event}</h4>
-                      <p className="milestone-desc">{milestone.description}</p>
-                      <span className="milestone-badge">{milestone.type}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {era.albums?.map((album) => {
+            {era.albums?.map((album: Album) => {
               const [firstHalfTracks, secondHalfTracks] = splitArrayInHalf(album.tracks || []);
 
               return (
@@ -129,9 +75,8 @@ const ErasTimelineSection = () => {
 
                     <div className="album-bento__item album-bento__tracklist">
                       <div className="bento-scroll-wrapper tracklist-grid">
-                        
                         <ol className="track-list">
-                          {firstHalfTracks.map((track) => (
+                          {firstHalfTracks.map((track: Track) => (
                             <li key={track.number} className="track-item">
                               <span className="track-number">{track.number}</span>
                               <span className="track-info">
@@ -144,9 +89,8 @@ const ErasTimelineSection = () => {
                             </li>
                           ))}
                         </ol>
-
                         <ol className="track-list">
-                          {secondHalfTracks.map((track) => (
+                          {secondHalfTracks.map((track: Track) => (
                             <li key={track.number} className="track-item">
                               <span className="track-number">{track.number}</span>
                               <span className="track-info">
@@ -159,7 +103,6 @@ const ErasTimelineSection = () => {
                             </li>
                           ))}
                         </ol>
-
                       </div> 
                     </div>
                       
@@ -172,13 +115,12 @@ const ErasTimelineSection = () => {
                     <div className="album-bento__item album-bento__concepts">
                       {album.themes && album.themes.length > 0 && (
                         <div className="themes-grid">
-                          {album.themes.map(t => (
+                          {album.themes.map((t: string) => (
                             <span key={t} className="theme-pill">{t}</span>
                           ))}
                         </div>
                       )}
                     </div>
-                    
                   </div>
                 </div>
               );

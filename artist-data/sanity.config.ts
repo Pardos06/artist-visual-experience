@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'artist-data',
 
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
+  projectId: 'v4x5ew49',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],
