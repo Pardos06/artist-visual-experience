@@ -9,3 +9,11 @@ h1, h2, h3 {
 p {
   line-height: 1.6;
 }
+
+@font-face {
+  font-family: 'CollegiateFLF';
+  src: url('https://fonts.cdnfonts.com/s/14897/CollegiateFLF.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

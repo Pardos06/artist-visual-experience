@@ -1,19 +1,28 @@
 import BentoCover3D from "../components/BentoCover3D";
 import { urlFor } from "../../../lib/sanity";
-// Importamos los tipos (ajusta la ruta si es necesario)
 import type { Era, Album, Track } from "../types/artist.types";
+
+interface ErasTimelineProps {
+  eras: Era[];
+}
 
 const splitArrayInHalf = <T,>(arr: T[]): [T[], T[]] => {
   const half = Math.ceil(arr.length / 2);
   return [arr.slice(0, half), arr.slice(half)];
 };
 
-// DEFINIMOS LA INTERFAZ DE PROPS
-interface ErasTimelineProps {
-  eras: Era[];
-}
-
 const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
+
+  const dynamicFontsCSS = eras
+    .flatMap(era => era.albums || [])
+    .filter(album => album.fontFileUrl && album.fontFamily)
+    .map(album => `
+      @font-face {
+        font-family: '${album.fontFamily}';
+        src: url('${album.fontFileUrl}');
+        font-display: swap;
+      }
+    `).join('\n');
 
   if (!eras || eras.length === 0) {
     return (
@@ -29,6 +38,10 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
 
   return (
     <div className="timeline-wrapper">
+      {dynamicFontsCSS && (
+        <style dangerouslySetInnerHTML={{ __html: dynamicFontsCSS }} />
+      )}
+      
       <div className="timeline-background">
         <div className="timeline-background__blobs"></div>
       </div>
@@ -56,6 +69,8 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
                     '--album-color-1': album.color?.[0] || '#333',
                     '--album-color-2': album.color?.[1] || '#666',
                     '--album-color-3': album.color?.[2] || '#999',
+                    // Si hay fuente guardada, aplicamos la familia y un fallback a sans-serif. Si no, hereda del body.
+                    '--album-font': album.fontFamily ? `'${album.fontFamily}', sans-serif` : 'inherit',
                   } as React.CSSProperties}
                 >
                   <div className="album-bento">
@@ -89,6 +104,7 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
                             </li>
                           ))}
                         </ol>
+
                         <ol className="track-list">
                           {secondHalfTracks.map((track: Track) => (
                             <li key={track.number} className="track-item">
@@ -121,6 +137,7 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
                         </div>
                       )}
                     </div>
+                    
                   </div>
                 </div>
               );

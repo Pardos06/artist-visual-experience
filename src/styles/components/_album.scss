@@ -15,10 +15,10 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
   grid-template-rows: 
-    minmax(0, 0.3fr)  // Fila 1: Solo Título 
-    minmax(0, 0.9fr)  // Fila 2: Cover (Izq) / Tracklist (Der) 
-    minmax(0, 0.3fr)  // Fila 3: Descripción (Izq) / Tracklist (Der) - CORREGIDO a 0.7fr
-    minmax(0, 0.3fr); // Fila 4: Descripción (Izq) / Conceptos (Der) 
+    minmax(0, 0.3fr)
+    minmax(0, 0.9fr)
+    minmax(0, 0.2fr)
+    minmax(0, 0.3fr);
   grid-template-areas:
     "cover title"
     "cover tracklist"
@@ -87,7 +87,6 @@
     overflow-y: auto;
     padding-right: 10px;
 
-    /* Estilos del scroll minimalista */
     &::-webkit-scrollbar { width: 6px; }
     &::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
     &::-webkit-scrollbar-thumb { background-color: rgba($color-primary, 0.15); border-radius: 20px; }
@@ -122,7 +121,14 @@
       margin: 0;
       letter-spacing: -0.5px;
       @include text-balance;
+    
+      // SOLUCIÓN CLAVE: ¡important fuerza al navegador a usar la fuente de Sanity sobre globals.scss!
+      font-family: var(--album-font) !important;
+    
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
+    
     span {
       font-size: 1.5rem;
       opacity: 0.5;
@@ -185,7 +191,7 @@
       flex-direction: column;
       justify-content: center;
       text-align: center;
-      min-height: 100%; /* Asegura que el contenido se centre en el túnel */
+      min-height: 100%;
     }
 
     p { 

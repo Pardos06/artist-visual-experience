@@ -53,6 +53,8 @@ export interface Era {
 export interface Album {
   id: string
   title: string
+  fontFileUrl?: string;
+  fontFamily?: string;
   year: number
   cover: string
   backCover: string
@@ -73,3 +75,4 @@ export interface Artist {
   influence: Influence[]
   legacy: Legacy
 }
+

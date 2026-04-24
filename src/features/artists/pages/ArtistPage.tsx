@@ -18,6 +18,8 @@ const ArtistPage = () => {
     useEffect(() => {
         const fetchArtist = async () => {
             setIsLoading(true);
+            
+            // Consulta GROQ corregida (con las comas en su lugar exacto)
             const query = `
                 *[_type == "artist" && slug.current == $slug][0] {
                     name,
@@ -42,6 +44,8 @@ const ArtistPage = () => {
                             themes,
                             color,
                             backColor,
+                            "fontFileUrl": customFont.asset->url,
+                            "fontFamily": customFont.fontName,
                             tracks
                         }
                     },
@@ -55,7 +59,7 @@ const ArtistPage = () => {
                 const data = await client.fetch(query, { slug: artistSlug });
                 setArtistData(data);
             } catch (error) {
-                console.error("Error fetching artist:", error);
+                console.error("Error al cargar datos:", error);
             } finally {
                 setIsLoading(false);
             }
@@ -64,15 +68,14 @@ const ArtistPage = () => {
         if (artistSlug) fetchArtist();
     }, [artistSlug]);
 
-    if (isLoading) return <div className="loading-screen">Cargando experiencia...</div>;
-    if (!artistData) return <div className="error-screen">Artista no encontrado</div>;
+    if (isLoading) return <div className="flex h-screen items-center justify-center text-white">Cargando experiencia...</div>;
+    if (!artistData) return <div className="flex h-screen items-center justify-center text-white">Artista no encontrado</div>;
 
     return (
         <main className="page_sections">
             <HeroSection hero={artistData.hero} />
             <OverviewSection overview={artistData.overview} />
             
-            {/* Ahora 'eras' fluye correctamente como prop */}
             <ErasTimelineSection eras={artistData.eras || []} />
             
             <AwardsSection awards={artistData.awards || []} />
