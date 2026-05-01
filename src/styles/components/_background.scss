@@ -1,12 +1,43 @@
 @use "../abstracts/variables" as *;
 
+// 1. ANIMACIÓN DE LOS BLOBS (Movimiento orgánico)
 @keyframes atmosphericFlow {
-  0% {transform: translate(0, 0) scale(1);}
-  33% {transform: translate(-5%, 5%) scale(1.1);}
-  66% {transform: translate(5%, -2%) scale(0.9);}
-  100% {transform: translate(0, 0) scale(1);}
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-3%, 3%) scale(1.05); }
+  66% { transform: translate(3%, -3%) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 
+// 2. ANIMACIÓN DEL GRID PAPER (Paneo infinito fluido)
+@keyframes panGrid {
+  0% { transform: translate(0, 0); }
+  // Se mueve exactamente un "cuadro" del grid (40px) para crear un loop perfecto invisible
+  100% { transform: translate(-40px, -40px); }
+}
+
+@keyframes orbitaFluida1 {
+  0% { transform: rotate(0deg) translate(15%, 15%) rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) translate(15%, 15%) rotate(-180deg) scale(1.1); }
+  100% { transform: rotate(360deg) translate(15%, 15%) rotate(-360deg) scale(1); }
+}
+
+@keyframes orbitaFluida2 {
+  0% { transform: rotate(360deg) translate(-15%, -15%) rotate(-360deg) scale(1); }
+  50% { transform: rotate(180deg) translate(-15%, -15%) rotate(-180deg) scale(1.2); }
+  100% { transform: rotate(0deg) translate(-15%, -15%) rotate(0deg) scale(1); }
+}
+
+@keyframes latidoMesh {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.15) translate(3%, 4%); }
+}
+@keyframes auroraEnergy {
+  0% { transform: translate(-10%, -10%) rotate(0deg) scale(1); }
+  25% { transform: translate(10%, 5%) rotate(90deg) scale(1.15); }
+  50% { transform: translate(-5%, 15%) rotate(180deg) scale(1); }
+  75% { transform: translate(-15%, -5%) rotate(270deg) scale(1.1); }
+  100% { transform: translate(-10%, -10%) rotate(360deg) scale(1); }
+}
 .timeline-background {
   position: fixed; 
   top: 0;
@@ -14,36 +45,151 @@
   width: 100vw;
   height: 100vh;
   z-index: -10;
+  pointer-events: none;
   background-color: var(--bg-color-1, #0a0807);
-  transition: background-color 0.8s ease;
+  transition: background-color 1.2s ease; // Transición de color de base muy suave
   overflow: hidden;
 
-  &__blobs {
+  // Overlay de Ruido
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.04; 
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    z-index: 5; 
+  }
+}
+
+// --- FONDO 1: BLOBS ATMOSFÉRICOS ---
+.bg-layer-blobs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  &__shape {
     position: absolute;
     width: 150%;
     height: 150%;
     top: -25%;
     left: -25%;
     filter: blur(100px);
-    opacity: 0.5; // Ajustar para más o menos intensidad
-    animation: atmosphericFlow $anim-bg-speed ease-in-out infinite;
+    opacity: 0.6; 
+    
+    // CORRECCIÓN: Tiempo hardcodeado (25s) para asegurar que nunca falle
+    animation: atmosphericFlow 25s ease-in-out infinite;
   
     background-image: 
-      radial-gradient(circle at 20% 30%, var(--bg-color-3, #4d3d1a) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, var(--bg-color-2, #2c241d) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, var(--bg-color-1, #0a0807) 0%, var(--bg-color-1, #0a0807) 100%);
-      transition: background-image 0.8s ease;
+      radial-gradient(circle at 20% 30%, var(--bg-color-3, rgba(255,255,255,0.1)) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, var(--bg-color-2, rgba(255,255,255,0.05)) 0%, transparent 50%);
   }
+}
 
-  // Overlay de ruido (opcional para textura minimalista)
-  &::after {
-    content: "";
+// --- FONDO 2: GRID PAPER (CUADERNO ANIMADO) ---
+.bg-layer-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  
+  &__pattern {
     position: absolute;
-    inset: 0;
-    opacity: 0.04; // Un poco más de opacidad para que el SVG se note bien
-    pointer-events: none;
+    // CORRECCIÓN PRO: Hacemos el div más grande que la pantalla para poder moverlo sin que se vean los bordes cortados
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    top: 0;
+    left: 0;
     
-    // Ruido generado matemáticamente por el navegador (¡cero peticiones externas!)
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.25; // Opacidad sutil
+    
+    background-image: 
+      linear-gradient(var(--bg-color-2, rgba(255,255,255,0.1)) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-color-3, rgba(255,255,255,0.1)) 1px, transparent 1px);
+    
+    // El tamaño del cuadrado DEBE coincidir con la distancia de la animación
+    background-size: 40px 40px; 
+    
+    // CORRECCIÓN: Paneo infinito de 4 segundos
+    animation: panGrid 4s linear infinite;
+  }
+}
+.bg-layer-mesh {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  
+  // El color base oscuro actuará como el lienzo de terciopelo
+  background-color: var(--bg-color-1, #1a0b12);
+  overflow: hidden;
+
+  &__glow {
+    position: absolute;
+    // Lo hacemos un 40% más grande que la pantalla para que nunca se vean bordes cortados
+    inset: -20%; 
+    width: 140%;
+    height: 140%;
+    
+    // El secreto del Mesh: Un blur extremadamente alto para que los gradientes se mezclen como pintura fresca
+    filter: blur(120px);
+    opacity: 0.95;
+    
+    // Masa central (Color 3 - Brillo)
+    background: radial-gradient(circle at 50% 50%, var(--bg-color-3, #8c5a45) 0%, transparent 60%);
+    animation: latidoMesh 15s ease-in-out infinite alternate;
+
+    // Primer flujo móvil (Color 2 - Tono medio)
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at 30% 30%, var(--bg-color-2, #6b3e46) 0%, transparent 65%);
+      // Usamos una duración asimétrica (27s) para que nunca se repita el mismo patrón exactamente
+      animation: orbitaFluida1 27s infinite linear;
+    }
+
+    // Segundo flujo móvil (Color 1 - Refuerzo de profundidad)
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at 70% 70%, var(--bg-color-1, #3b2024) 0%, transparent 70%);
+      // Animación en reversa y asimétrica
+      animation: orbitaFluida2 34s infinite linear;
+    }
+  }
+}
+
+.bg-layer-aurora {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-color-1, #1a0b12); // Base morada profunda
+  overflow: hidden;
+
+  &__lights {
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    
+    // Menor blur que el mesh (80px vs 140px) para que el color sea más "eléctrico"
+    filter: blur(80px);
+    opacity: 0.9;
+
+    // Gradientes con paradas más agresivas para el efecto "Pop"
+    background-image:
+      radial-gradient(circle at 15% 15%, var(--bg-color-2, #803b66) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, var(--bg-color-3, #e8e2d4) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, var(--bg-color-1, #5d3667) 0%, transparent 60%),
+      // Un cuarto destello blanco-amarillo para simular flashes de estadios
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2) 0%, transparent 30%);
+
+    // Animación rápida (12 segundos) para denotar energía
+    animation: auroraEnergy 12s linear infinite;
   }
 }

@@ -4,10 +4,10 @@ import ArtistPage from "../features/artists/pages/ArtistPage";
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <div>Home</div>
+        element: <div className="text-white">Home - Selecciona un artista</div>
     },
     {
-        path: "/artist/kanye",
+        path: "/artist/:artistSlug",
         element: <ArtistPage />
     }
 ]);

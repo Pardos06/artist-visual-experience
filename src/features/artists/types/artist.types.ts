@@ -47,12 +47,14 @@ export interface Era {
   endYear?: number
   description: string
   albums: Album[]
-  milestones: Milestone[]
+  milestones?: Milestone[]
 }
 
 export interface Album {
   id: string
   title: string
+  fontFileUrl?: string;
+  fontFamily?: string;
   year: number
   cover: string
   backCover: string
@@ -61,11 +63,14 @@ export interface Album {
   themes: string[]
   color: [string, string, string];
   backColor: [string, string, string];
+  backgroundType: 'blobs' | 'grid-paper';
 }
 
 export interface Artist {
   id: string
   name: string
+  artistFontUrl?: string; 
+  artistFontFamily?: string;
   hero: Hero
   overview: Overview
   eras: Era[]
@@ -73,3 +78,4 @@ export interface Artist {
   influence: Influence[]
   legacy: Legacy
 }
+
