@@ -31,7 +31,7 @@ export const albumType = defineType({
     defineField({ name: 'themes', title: 'Temas', type: 'array', of: [{ type: 'string' }] }),
     // Validación estricta para tus 3 colores
     defineField({ 
-
+      
       name: 'color', title: 'Paleta (Bordes)', type: 'array', of: [{ type: 'string' }],
       validation: Rule => Rule.min(3).max(3).error('Debes ingresar exactamente 3 colores HEX')
     }),
@@ -39,7 +39,21 @@ export const albumType = defineType({
       name: 'backColor', title: 'Paleta (Fondo)', type: 'array', of: [{ type: 'string' }],
       validation: Rule => Rule.min(3).max(3).error('Debes ingresar exactamente 3 colores HEX')
     }),
-    // Inyectamos el objeto Track que creamos en el paso 1
+    defineField({
+      name: 'backgroundType',
+      title: 'Tipo de Fondo Dinámico',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Blobs Atmosféricos (Por defecto)', value: 'blobs' },
+          { title: 'Grid Paper (Cuaderno de Bocetos)', value: 'grid-paper' },
+          { title: 'Sophisticated Mesh (Lujoso/Orquestal)', value: 'mesh' },
+          { title: 'Vibrant Aurora Pop (Graduation)', value: 'aurora-pop' },
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'blobs'
+    }),
     defineField({ name: 'tracks', title: 'Canciones', type: 'array', of: [{ type: 'track' }] }),
   ],
 })

@@ -35,9 +35,9 @@
     position: relative;
     isolation: isolate;
 
-    background: rgba($bento-bg-item, 0.8);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     
     border-radius: $bento-radius;
     padding: $spacing-lg - 8px;

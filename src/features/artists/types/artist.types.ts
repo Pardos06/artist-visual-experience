@@ -63,6 +63,7 @@ export interface Album {
   themes: string[]
   color: [string, string, string];
   backColor: [string, string, string];
+  backgroundType: 'blobs' | 'grid-paper';
 }
 
 export interface Artist {

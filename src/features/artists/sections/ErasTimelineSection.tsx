@@ -1,6 +1,9 @@
 import BentoCover3D from "../components/BentoCover3D";
 import { urlFor } from "../../../lib/sanity";
 import type { Era, Album, Track } from "../types/artist.types";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import DynamicBackground from "../components/DynamicBackground";
 
 interface ErasTimelineProps {
   eras: Era[];
@@ -12,6 +15,10 @@ const splitArrayInHalf = <T,>(arr: T[]): [T[], T[]] => {
 };
 
 const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
+  const [activeBg, setActiveBg] = useState({
+    type: 'blobs',
+    colors: ['#0a0807', '#2c241d', '#4d3d1a']
+  });
 
   const dynamicFontsCSS = eras
     .flatMap(era => era.albums || [])
@@ -24,17 +31,7 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
       }
     `).join('\n');
 
-  if (!eras || eras.length === 0) {
-    return (
-      <div className="timeline-wrapper">
-        <section className="timeline">
-          <div className="era-intro" style={{ opacity: 0.5 }}>
-            <h2>No hay eras registradas para este artista.</h2>
-          </div>
-        </section>
-      </div>
-    );
-  }
+  if (!eras || eras.length === 0) return null;
 
   return (
     <div className="timeline-wrapper">
@@ -42,19 +39,15 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
         <style dangerouslySetInnerHTML={{ __html: dynamicFontsCSS }} />
       )}
       
-      <div className="timeline-background">
-        <div className="timeline-background__blobs"></div>
-      </div>
+      {/* 1. ESTE ES EL ÚNICO FONDO QUE DEBE EXISTIR */}
+      <DynamicBackground type={activeBg.type} colors={activeBg.colors} />
 
       <section className="timeline">
         {eras.map((era: Era) => (
           <div key={era.id} className="__era-group">
-            
             <div className="era-intro">
               <h2>{era.title}</h2>
-              <span>
-                {era.startYear} - {era.endYear || "Present"}
-              </span>
+              <span>{era.startYear} - {era.endYear || "Present"}</span>
               <p>{era.description}</p>
             </div>
 
@@ -62,19 +55,29 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
               const [firstHalfTracks, secondHalfTracks] = splitArrayInHalf(album.tracks || []);
 
               return (
-                <div 
+                <motion.div 
                   key={album.id} 
                   className="timeline__album"
+                  onViewportEnter={() => {
+                    // LOG DE DEPURACIÓN: Verifica esto en tu consola
+                    console.log(`🎯 Álbum activo: ${album.title}`);
+                    console.log(`🎨 Colores de Sanity:`, album.backColor);
+
+                    setActiveBg({
+                      type: (album.backgroundType as any) || 'blobs',
+                      colors: album.backColor || ['#0a0807', '#2c241d', '#4d3d1a']
+                    });
+                  }}
+                  viewport={{ amount: 0.3, margin: "-10% 0px -10% 0px" }}
                   style={{
                     '--album-color-1': album.color?.[0] || '#333',
                     '--album-color-2': album.color?.[1] || '#666',
                     '--album-color-3': album.color?.[2] || '#999',
-                    // Si hay fuente guardada, aplicamos la familia y un fallback a sans-serif. Si no, hereda del body.
                     '--album-font': album.fontFamily ? `'${album.fontFamily}', sans-serif` : 'inherit',
                   } as React.CSSProperties}
                 >
+                  {/* ... resto del bento grid (se mantiene igual) ... */}
                   <div className="album-bento">
-                    
                     <div className="album-bento__item album-bento__cover bento-cover">
                       <BentoCover3D 
                         cover={album.cover ? urlFor(album.cover).url() : ''} 
@@ -82,64 +85,50 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
                         title={album.title} 
                       />
                     </div>
-
                     <div className="album-bento__item album-bento__title">
                       <h3>{album.title}</h3>
                       <span>{album.year}</span>
                     </div>
-
                     <div className="album-bento__item album-bento__tracklist">
                       <div className="bento-scroll-wrapper tracklist-grid">
                         <ol className="track-list">
-                          {firstHalfTracks.map((track: Track) => (
-                            <li key={track.number} className="track-item">
+                          {firstHalfTracks.map((track: Track, index: number) => (
+                            <li key={`track-1-${track.number || index}-${index}`} className="track-item">
                               <span className="track-number">{track.number}</span>
                               <span className="track-info">
                                 <span className="track-title">{track.title}</span>
-                                {track.featuredArtists && track.featuredArtists.length > 0 && (
-                                  <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
-                                )}
+                                {track.featuredArtists && <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>}
                               </span>
-                              {track.duration && <span className="track-duration">{track.duration}</span>}
                             </li>
                           ))}
                         </ol>
-
                         <ol className="track-list">
-                          {secondHalfTracks.map((track: Track) => (
-                            <li key={track.number} className="track-item">
+                          {secondHalfTracks.map((track: Track, index: number) => (
+                            <li key={`track-2-${track.number || index}-${index}`} className="track-item">
                               <span className="track-number">{track.number}</span>
                               <span className="track-info">
                                 <span className="track-title">{track.title}</span>
-                                {track.featuredArtists && track.featuredArtists.length > 0 && (
-                                  <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
-                                )}
+                                {track.featuredArtists && <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>}
                               </span>
-                              {track.duration && <span className="track-duration">{track.duration}</span>}
                             </li>
                           ))}
                         </ol>
-                      </div> 
+                      </div>
                     </div>
-                      
                     <div className="album-bento__item album-bento__desc">
                       <div className="bento-scroll-wrapper desc-wrapper">
                         <p>{album.description}</p>
                       </div>
                     </div>
-
                     <div className="album-bento__item album-bento__concepts">
-                      {album.themes && album.themes.length > 0 && (
+                      {album.themes && (
                         <div className="themes-grid">
-                          {album.themes.map((t: string) => (
-                            <span key={t} className="theme-pill">{t}</span>
-                          ))}
+                          {album.themes.map((t: string) => <span key={t} className="theme-pill">{t}</span>)}
                         </div>
                       )}
                     </div>
-                    
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>

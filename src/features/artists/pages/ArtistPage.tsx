@@ -19,7 +19,6 @@ const ArtistPage = () => {
         const fetchArtist = async () => {
             setIsLoading(true);
             
-            // Consulta GROQ corregida (con las comas en su lugar exacto)
             const query = `
                 *[_type == "artist" && slug.current == $slug][0] {
                     name,
@@ -44,6 +43,7 @@ const ArtistPage = () => {
                             themes,
                             color,
                             backColor,
+                            backgroundType,
                             "fontFileUrl": customFont.asset->url,
                             "fontFamily": customFont.fontName,
                             tracks
