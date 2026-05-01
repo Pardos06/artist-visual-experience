@@ -69,6 +69,8 @@ export interface Album {
 export interface Artist {
   id: string
   name: string
+  artistFontUrl?: string; 
+  artistFontFamily?: string;
   hero: Hero
   overview: Overview
   eras: Era[]

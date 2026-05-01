@@ -7,6 +7,15 @@ export const artistType = defineType({
   fields: [
     defineField({ name: 'name', title: 'Nombre del Artista', type: 'string' }),
     defineField({ name: 'hero', title: 'Sección Hero', type: 'hero' }),
+    defineField({
+      name: 'artistFont',
+      title: 'Fuente Global del Artista',
+      type: 'file',
+      options: { accept: '.ttf,.otf,.woff2' },
+      fields: [
+        { name: 'fontName', type: 'string', title: 'Nombre de la Familia tipográfica' }
+      ]
+    }),
     defineField({ name: 'overview', title: 'Visión General', type: 'overview' }),
     // Referencia a las Eras
     defineField({

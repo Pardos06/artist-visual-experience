@@ -22,6 +22,9 @@ const ArtistPage = () => {
             const query = `
                 *[_type == "artist" && slug.current == $slug][0] {
                     name,
+                    // SOLUCIÓN 1: Ahora sí estamos pidiendo la fuente a Sanity
+                    "artistFontUrl": artistFont.asset->url,
+                    "artistFontFamily": artistFont.fontName,
                     hero {
                         quote,
                         "image": image.asset->url
@@ -33,6 +36,7 @@ const ArtistPage = () => {
                         startYear,
                         endYear,
                         description,
+                        milestones,
                         "albums": albums[]->{
                             "id": _id,
                             title,
@@ -73,6 +77,30 @@ const ArtistPage = () => {
 
     return (
         <main className="page_sections">
+            {/* SOLUCIÓN 2: Inyección CSS Agresiva. Obligamos a todas las etiquetas a usar la fuente */}
+            {artistData.artistFontUrl && (
+                <style dangerouslySetInnerHTML={{ __html: `
+                    @font-face {
+                        font-family: '${artistData.artistFontFamily}';
+                        src: url('${artistData.artistFontUrl}');
+                        font-display: swap;
+                    }
+
+                    :root {
+                        --global-artist-font: '${artistData.artistFontFamily}', sans-serif;
+                    }
+
+                    body, h1, h2, h3, p, span, div, a {
+                        font-family: var(--global-artist-font) !important;
+                    }
+
+                    /* Protegemos los títulos de los álbumes en el Pop-up para que conserven la suya */
+                    .album-bento__title h3 {
+                        font-family: var(--album-font, var(--global-artist-font)) !important;
+                    }
+                `}} />
+            )}
+            
             <HeroSection hero={artistData.hero} />
             <OverviewSection overview={artistData.overview} />
             

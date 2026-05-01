@@ -16,6 +16,17 @@ export const eraType = defineType({
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'album' }] }],
     }),
-    defineField({ name: 'milestones', title: 'Momentos Clave', type: 'array', of: [{ type: 'milestone' }] }),
+    defineField({
+      name: 'milestones',
+      title: 'Momentos Clave / Hitos',
+      type: 'array',
+      of: [{
+        type: 'object',
+        fields: [
+          { name: 'year', type: 'string', title: 'Año/Momento' },
+          { name: 'description', type: 'string', title: 'Descripción corta' }
+        ]
+      }]
+    })
   ],
 })

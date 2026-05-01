@@ -4,4 +4,10 @@ body {
   font-family: v.$font-main;
   color: v.$color-primary;
   overflow-x: hidden;
+
+  // Evitar scroll vertical en móviles cuando se abre el menú
+  &.no-scroll {
+    overflow: hidden;
+    padding-right: 6px; // Compensar el scrollbar para evitar salto de contenido
+  }
 }
