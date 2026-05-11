@@ -20,8 +20,6 @@
 @use "./components/background";
 @use "./components/bento-cover-3d";
 
-
-
 html {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;

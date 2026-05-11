@@ -1,9 +1,11 @@
 export interface Hero {
-  image: string
+  artistName: string
+  imagesHero: string
   quote: string
 }
 
 export interface Overview {
+  realName: string
   biography: string
   born: string
   origin: string
@@ -20,17 +22,13 @@ export interface Award {
 export interface Influence {
   title: string
   description: string
+  influenceType: 'musical' | 'visual' | 'cultural';
+  imagesInfluence: string; 
 }
 
 export interface Legacy {
   summary: string
-}
-
-export interface Milestone {
-  date: string; 
-  event: string;
-  description: string;
-  type: 'award' | 'tour' | 'personal' | 'scandal'; 
+  imagesLegacy: string[];
 }
 
 export interface Track {
@@ -40,22 +38,12 @@ export interface Track {
   featuredArtists?: string[]; 
 }
 
-export interface Era {
-  id: string
-  title: string
-  startYear: number
-  endYear?: number
-  description: string
-  albums: Album[]
-  milestones?: Milestone[]
-}
-
 export interface Album {
   id: string
   title: string
   fontFileUrl?: string;
   fontFamily?: string;
-  year: number
+  year: Date | string;
   cover: string
   backCover: string
   description: string
@@ -64,6 +52,33 @@ export interface Album {
   color: [string, string, string];
   backColor: [string, string, string];
   backgroundType: 'blobs' | 'grid-paper';
+}
+
+export interface UnreleasedAlbum extends Album {
+  unreleasedReason: string;
+  leakDate?: string;
+  status: 'scrapped' | 'shelved' | 'reworked';
+  intendedReleaseDate?: string;
+}
+
+export interface Milestone {
+  date: string; 
+  event: string;
+  description: string;
+  type: 'award' | 'tour' | 'personal' | 'scandal';
+  imagesMilestone: string[]; 
+}
+
+export interface Era {
+  id: string
+  title: string
+  startYear: number
+  endYear?: number
+  imagesEra: string[]
+  description: string
+  albums: Album[]
+  unreleasedAlbums?: UnreleasedAlbum[]
+  milestones?: Milestone[]
 }
 
 export interface Artist {

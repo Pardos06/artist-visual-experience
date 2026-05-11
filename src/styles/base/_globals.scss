@@ -5,9 +5,40 @@ body {
   color: v.$color-primary;
   overflow-x: hidden;
 
-  // Evitar scroll vertical en móviles cuando se abre el menú
   &.no-scroll {
     overflow: hidden;
-    padding-right: 6px; // Compensar el scrollbar para evitar salto de contenido
+    padding-right: 6px; 
   }
+}
+
+.message_loading,
+.message_not_found {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  background-color: v.$color-secondary;
+  color: v.$color-primary;
+  font-family: v.$font-main;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.message_loading {
+  animation: pulseLoading 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseLoading {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.message_not_found {
+  color: v.$color-primary; 
 }

@@ -3,31 +3,61 @@
 
 .overview {
   @include slide-base;
+  
+  &__container {
+    width: 100%;
+    max-width: 900px; // Limita el ancho para optimizar la legibilidad
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+
   &__title {
-    font-size: 2rem;
-    margin-bottom: $spacing-md;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: $spacing-lg;
     text-align: center;
-    @include text-balance; 
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
 
   &__bio {
-    max-width: 700px;
-    margin-bottom: $spacing-lg;
+    width: 100%;
+    margin-bottom: 4rem;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.8;
+    text-align: justify; // Texto justificado según el requerimiento
+    hyphens: auto; // Evita espacios blancos irregulares al justificar
   }
 
   &__stats {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: $spacing-lg; 
+    // Cuadrícula fluida: Crea columnas automáticamente sin Media Queries
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: $spacing-lg;
+    text-align: center;
+    
+  }
 
-    span {
-      font-size: 0.8rem;
-      opacity: 0.6;
-    }
+  &__stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    
+  }
 
-    p {
-      font-weight: 500;
-      margin: 0; 
-    }
+  &__stat-label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
+  &__stat-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
   }
 }

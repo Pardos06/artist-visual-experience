@@ -1,28 +1,60 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
 .hero {
+  @include full-screen; 
   position: relative;
-  height: 100vh;
   overflow: hidden;
 
   &__image {
     position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1;
   }
 
   &__overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: linear-gradient(
+      to bottom, 
+      rgba(0, 0, 0, 0.1) 0%, 
+      rgba(0, 0, 0, 0.85) 100%
+    );
+    z-index: 2;
+  }
+
+  &__content {
+    @include full-screen; 
+    position: relative;
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin: 0 auto;
+
+
+    padding: 0 5vw 10vh 5vw; 
+    text-align: left;
+  }
+
+  &__name {
+    color: $color-secondary;
+    font-size: clamp(3rem, 8vw, 8rem); 
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: $spacing-md;
+    line-height: 1;
   }
 
   &__quote {
-    color: $color-secondary;
-    position: absolute;
-    bottom: 10%;
-    left: 5%;
-    max-width: 600px;
-    font-size: 2.5rem;
+    color: rgba($color-secondary, 0.8);
+    max-width: 800px;
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    @include text-balance; 
   }
 }

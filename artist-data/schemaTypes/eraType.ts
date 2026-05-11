@@ -9,6 +9,14 @@ export const eraType = defineType({
     defineField({ name: 'startYear', title: 'Año de Inicio', type: 'number' }),
     defineField({ name: 'endYear', title: 'Año de Fin (Dejar vacío si es Presente)', type: 'number' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text' }),
+
+    defineField({ name: 'imagesEra', title: 'Galería de Imágenes de la Era',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Puedes agregar múltiples imágenes (hasta 12). No es obligatorio.',
+      validation: Rule => Rule.max(12)
+    }),
+    
     // Referencia: En lugar de crear el álbum aquí adentro, seleccionas uno de los que ya creaste en la pestaña "Álbumes"
     defineField({
       name: 'albums',
@@ -16,6 +24,14 @@ export const eraType = defineType({
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'album' }] }],
     }),
+
+    defineField({
+      name: 'unreleasedAlbums',
+      title: 'Álbumes No Lanzados',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'unreleasedAlbum' }] }],
+    }),
+
     defineField({
       name: 'milestones',
       title: 'Momentos Clave / Hitos',

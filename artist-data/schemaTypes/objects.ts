@@ -5,7 +5,8 @@ export const heroType = defineType({
   title: 'Hero Section',
   type: 'object',
   fields: [
-    defineField({ name: 'image', title: 'Imagen Hero', type: 'image', options: { hotspot: true } }),
+    defineField({ name: 'name', title: 'Nombre del Artista', type: 'string' }),
+    defineField({ name: 'imagesHero', title: 'Imagen Hero', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'quote', title: 'Cita / Frase', type: 'text' }),
   ],
 })
@@ -15,6 +16,7 @@ export const overviewType = defineType({
   title: 'Visión General',
   type: 'object',
   fields: [
+    defineField({ name: 'realName', title: 'Nombre Real', type: 'string' }),
     defineField({ name: 'biography', title: 'Biografía', type: 'text' }),
     defineField({ name: 'born', title: 'Fecha de Nacimiento', type: 'string' }),
     defineField({ name: 'origin', title: 'Origen', type: 'string' }),
@@ -41,6 +43,24 @@ export const influenceType = defineType({
   fields: [
     defineField({ name: 'title', title: 'Título', type: 'string' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text' }),
+    defineField({
+      name: 'influenceType',
+      title: 'Tipo de Influencia',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Musical', value: 'musical' },
+          { title: 'Visual', value: 'visual' },
+          { title: 'Cultural', value: 'cultural' },
+        ],
+        layout: 'radio'
+      }
+    }),
+    defineField({ name: 'imagesInfluence', title: 'Galería de Imágenes Finales', 
+      type: 'array', 
+      of: [{ type: 'image', options: { hotspot: true } }],
+      validation: Rule => Rule.max(12)
+    }),
   ],
 })
 
@@ -50,6 +70,11 @@ export const legacyType = defineType({
   type: 'object',
   fields: [
     defineField({ name: 'summary', title: 'Resumen del Legado', type: 'text' }),
+    defineField({ name: 'imagesLegacy', title: 'Galería de Imágenes del Legado', 
+      type: 'array', 
+      of: [{ type: 'image', options: { hotspot: true } }],
+      validation: Rule => Rule.max(12)
+    }),
   ],
 })
 
@@ -74,6 +99,7 @@ export const milestoneType = defineType({
         ],
       },
     }),
+    defineField({ name: 'imagesMilestone', title: 'Fotografías', type: 'image', options: { hotspot: true } }),
   ],
 })
 

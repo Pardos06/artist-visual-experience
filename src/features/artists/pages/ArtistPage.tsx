@@ -9,10 +9,11 @@ import HeroSection from "../sections/HeroSection";
 import InfluenceSection from "../sections/InfluenceSection";
 import LegacySection from "../sections/LegacySection";
 import OverviewSection from "../sections/OverviewSection";
+import type { Artist } from "../types/artist.types";
 
 const ArtistPage = () => {
     const { artistSlug } = useParams();
-    const [artistData, setArtistData] = useState<any>(null);
+    const [artistData, setArtistData] = useState<Artist | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -22,12 +23,12 @@ const ArtistPage = () => {
             const query = `
                 *[_type == "artist" && slug.current == $slug][0] {
                     name,
-                    // SOLUCIÓN 1: Ahora sí estamos pidiendo la fuente a Sanity
                     "artistFontUrl": artistFont.asset->url,
                     "artistFontFamily": artistFont.fontName,
                     hero {
+                        "artistName": name, 
                         quote,
-                        "image": image.asset->url
+                        "imagesHero": imagesHero.asset->url
                     },
                     overview,
                     "eras": eras[]-> | order(startYear asc) {
@@ -36,29 +37,37 @@ const ArtistPage = () => {
                         startYear,
                         endYear,
                         description,
-                        milestones,
+                        "imagesEra": imagesEra[].asset->url,
+                        milestones[] {
+                            date, 
+                            event, 
+                            description, 
+                            type, 
+                            "imagesMilestone": [imagesMilestone.asset->url]
+                        },
                         "albums": albums[]->{
-                            "id": _id,
-                            title,
-                            year,
-                            cover,
-                            backCover,
-                            description,
-                            themes,
-                            color,
-                            backColor,
-                            backgroundType,
-                            "fontFileUrl": customFont.asset->url,
-                            "fontFamily": customFont.fontName,
-                            tracks
+                            "id": _id, title, year, cover, backCover, description, themes, color, backColor, backgroundType,
+                            "fontFileUrl": customFont.asset->url, "fontFamily": customFont.fontName, tracks
+                        },
+                        "unreleasedAlbums": unreleasedAlbums[]->{
+                            "id": _id, title, year, cover, backCover, description, themes, color, backColor, backgroundType,
+                            "fontFileUrl": customFont.asset->url, "fontFamily": customFont.fontName, tracks,
+                            unreleasedReason, leakDate, status, intendedReleaseDate
                         }
                     },
                     awards,
-                    influence,
-                    legacy
+                    influence[] {
+                        title, 
+                        description, 
+                        influenceType, 
+                        "imagesInfluence": imagesInfluence[0].asset->url
+                    },
+                    legacy {
+                        summary, 
+                        "imagesLegacy": imagesLegacy[].asset->url
+                    }
                 }
             `;
-
             try {
                 const data = await client.fetch(query, { slug: artistSlug });
                 setArtistData(data);
@@ -72,12 +81,11 @@ const ArtistPage = () => {
         if (artistSlug) fetchArtist();
     }, [artistSlug]);
 
-    if (isLoading) return <div className="flex h-screen items-center justify-center text-white">Cargando experiencia...</div>;
-    if (!artistData) return <div className="flex h-screen items-center justify-center text-white">Artista no encontrado</div>;
+    if (isLoading) return <div className="message_loading">Cargando experiencia...</div>;
+    if (!artistData) return <div className="message_not_found">Artista no encontrado</div>;
 
     return (
-        <main className="page_sections">
-            {/* SOLUCIÓN 2: Inyección CSS Agresiva. Obligamos a todas las etiquetas a usar la fuente */}
+        <main>
             {artistData.artistFontUrl && (
                 <style dangerouslySetInnerHTML={{ __html: `
                     @font-face {
@@ -94,7 +102,6 @@ const ArtistPage = () => {
                         font-family: var(--global-artist-font) !important;
                     }
 
-                    /* Protegemos los títulos de los álbumes en el Pop-up para que conserven la suya */
                     .album-bento__title h3 {
                         font-family: var(--album-font, var(--global-artist-font)) !important;
                     }
