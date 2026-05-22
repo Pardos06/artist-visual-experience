@@ -9,10 +9,8 @@ const MilestoneSection = ({ Milestone }: Props) => {
     <section className="Milestone section">
       <div className="container">
         <h2>Milestone</h2>
-        <p>{Milestone.date}</p>
-        <p>{Milestone.event}</p>
+        <p>{Milestone.year}</p>
         <p>{Milestone.description}</p>
-        <p>Type: {Milestone.type}</p>
         
       </div>
     </section>

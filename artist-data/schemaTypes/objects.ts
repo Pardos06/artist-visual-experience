@@ -56,8 +56,9 @@ export const influenceType = defineType({
         layout: 'radio'
       }
     }),
-    defineField({ name: 'imagesInfluence', title: 'Galería de Imágenes Finales', 
-      type: 'array', 
+    defineField({
+      name: 'imagesInfluence', title: 'Galería de Imágenes Finales',
+      type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
       validation: Rule => Rule.max(12)
     }),
@@ -70,8 +71,9 @@ export const legacyType = defineType({
   type: 'object',
   fields: [
     defineField({ name: 'summary', title: 'Resumen del Legado', type: 'text' }),
-    defineField({ name: 'imagesLegacy', title: 'Galería de Imágenes del Legado', 
-      type: 'array', 
+    defineField({
+      name: 'imagesLegacy', title: 'Galería de Imágenes del Legado',
+      type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
       validation: Rule => Rule.max(12)
     }),
@@ -87,7 +89,7 @@ export const milestoneType = defineType({
     defineField({ name: 'event', title: 'Evento', type: 'string' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text' }),
     defineField({
-      name: 'type',
+      name: 'eventType',
       title: 'Tipo de Evento',
       type: 'string',
       options: {

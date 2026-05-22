@@ -24,12 +24,17 @@ export const albumType = defineType({
       ]
     }),
 
-    defineField({ name: 'year', title: 'Año', type: 'number' }),
+    defineField({ 
+      name: 'year', 
+      title: 'Fecha de Lanzamiento', 
+      type: 'string', // Cambiado a string para soportar valores antiguos (números) y nuevos formatos
+      description: 'Puede ser un año (2002) o una fecha (02/02/2002)',
+      validation: Rule => Rule.required()
+    }),
     defineField({ name: 'cover', title: 'Portada', type: 'image' }),
     defineField({ name: 'backCover', title: 'Contraportada', type: 'image' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text' }),
     defineField({ name: 'themes', title: 'Temas', type: 'array', of: [{ type: 'string' }] }),
-    // Validación estricta para tus 3 colores
     defineField({ 
       
       name: 'color', title: 'Paleta (Bordes)', type: 'array', of: [{ type: 'string' }],

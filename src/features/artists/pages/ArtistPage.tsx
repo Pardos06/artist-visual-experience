@@ -19,7 +19,7 @@ const ArtistPage = () => {
     useEffect(() => {
         const fetchArtist = async () => {
             setIsLoading(true);
-            
+
             const query = `
                 *[_type == "artist" && slug.current == $slug][0] {
                     name,
@@ -39,11 +39,11 @@ const ArtistPage = () => {
                         description,
                         "imagesEra": imagesEra[].asset->url,
                         milestones[] {
-                            date, 
-                            event, 
+                            year, 
                             description, 
-                            type, 
-                            "imagesMilestone": [imagesMilestone.asset->url]
+                            event, 
+                            eventType, 
+                            "imagesMilestone": imagesMilestone.asset->url
                         },
                         "albums": albums[]->{
                             "id": _id, title, year, cover, backCover, description, themes, color, backColor, backgroundType,
@@ -87,7 +87,8 @@ const ArtistPage = () => {
     return (
         <main>
             {artistData.artistFontUrl && (
-                <style dangerouslySetInnerHTML={{ __html: `
+                <style dangerouslySetInnerHTML={{
+                    __html: `
                     @font-face {
                         font-family: '${artistData.artistFontFamily}';
                         src: url('${artistData.artistFontUrl}');
@@ -107,12 +108,12 @@ const ArtistPage = () => {
                     }
                 `}} />
             )}
-            
+
             <HeroSection hero={artistData.hero} />
             <OverviewSection overview={artistData.overview} />
-            
+
             <ErasTimelineSection eras={artistData.eras || []} />
-            
+
             <AwardsSection awards={artistData.awards || []} />
             <InfluenceSection influence={artistData.influence || []} />
             <LegacySection legacy={artistData.legacy} />

@@ -23,7 +23,7 @@ export interface Influence {
   title: string
   description: string
   influenceType: 'musical' | 'visual' | 'cultural';
-  imagesInfluence: string; 
+  imagesInfluence: string;
 }
 
 export interface Legacy {
@@ -35,7 +35,7 @@ export interface Track {
   number: number;
   title: string;
   duration?: string;
-  featuredArtists?: string[]; 
+  featuredArtists?: string[];
 }
 
 export interface Album {
@@ -43,7 +43,7 @@ export interface Album {
   title: string
   fontFileUrl?: string;
   fontFamily?: string;
-  year: Date | string;
+  year: string | Date | number;
   cover: string
   backCover: string
   description: string
@@ -62,11 +62,11 @@ export interface UnreleasedAlbum extends Album {
 }
 
 export interface Milestone {
-  date: string; 
-  event: string;
+  year: string;
   description: string;
-  type: 'award' | 'tour' | 'personal' | 'scandal';
-  imagesMilestone: string[]; 
+  event: string;
+  eventType: 'award' | 'tour' | 'personal' | 'scandal';
+  imagesMilestone?: string[];
 }
 
 export interface Era {
@@ -84,7 +84,7 @@ export interface Era {
 export interface Artist {
   id: string
   name: string
-  artistFontUrl?: string; 
+  artistFontUrl?: string;
   artistFontFamily?: string;
   hero: Hero
   overview: Overview
