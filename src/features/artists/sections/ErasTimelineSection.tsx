@@ -47,6 +47,25 @@ const splitArrayInHalf = <T,>(arr: T[]): [T[], T[]] => {
   return [arr.slice(0, half), arr.slice(half)];
 };
 
+const isLightColor = (color: string | undefined): boolean => {
+  if (!color) return false;
+  let hex = color.trim().replace("#", "");
+
+  if (hex.length === 3) {
+    hex = hex.split("").map((c) => c + c).join("");
+  }
+
+  if (hex.length === 6) {
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.55;
+  }
+
+  return false;
+};
+
 const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
 
@@ -74,6 +93,8 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
     .join("\n");
 
   if (!eras || eras.length === 0) return null;
+
+  const isLight = selectedAlbum ? isLightColor(selectedAlbum.backColor?.[0] || "#0a0807") : false;
 
   return (
     <div className="timeline-wrapper">
@@ -166,6 +187,14 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
                   "--album-font": selectedAlbum.fontFamily
                     ? `'${selectedAlbum.fontFamily}', sans-serif`
                     : "inherit",
+                  "--album-text-color": isLight ? "#0c0a09" : "#ffffff",
+                  "--album-text-muted": isLight ? "rgba(12, 10, 9, 0.6)" : "rgba(255, 255, 255, 0.5)",
+                  "--album-border-color": isLight ? "rgba(0, 0, 0, 0.12)" : "rgba(255, 255, 255, 0.08)",
+                  "--album-item-bg": isLight ? "rgba(255, 255, 255, 0.45)" : "rgba(0, 0, 0, 0.35)",
+                  "--album-scroll-thumb": isLight ? "rgba(0, 0, 0, 0.25)" : "rgba(255, 255, 255, 0.15)",
+                  "--album-pill-bg": isLight ? "rgba(0, 0, 0, 0.04)" : "rgba(255, 255, 255, 0.03)",
+                  "--album-pill-border": isLight ? "rgba(0, 0, 0, 0.15)" : "rgba(255, 255, 255, 0.1)",
+                  "--album-track-title-color": isLight ? "#0c0a09" : "rgba(255, 255, 255, 0.95)",
                 } as React.CSSProperties
               }
             >
@@ -195,6 +224,9 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
                               <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
                             )}
                           </span>
+                          {track.duration && (
+                            <span className="track-duration">{track.duration}</span>
+                          )}
                         </li>
                       ))}
                     </ol>
@@ -208,6 +240,9 @@ const ErasTimelineSection = ({ eras }: ErasTimelineProps) => {
                               <span className="track-featured">ft. {track.featuredArtists.join(", ")}</span>
                             )}
                           </span>
+                          {track.duration && (
+                            <span className="track-duration">{track.duration}</span>
+                          )}
                         </li>
                       ))}
                     </ol>
